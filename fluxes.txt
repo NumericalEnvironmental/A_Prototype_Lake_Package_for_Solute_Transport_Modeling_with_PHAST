@@ -1,0 +1,7 @@
+Term	Rate	Balance
+Evap	0.003477
+Ppt	0.000487
+GWInflow	1.006209E+04
+GWOutflow	9.621137E+03
+Inflow	5000.	1
+Outflow	0	0

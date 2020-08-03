@@ -1,0 +1,143 @@
+TITLE
+	lake simulation
+
+UNITS
+	-time			day
+	-horizontal_grid	m
+	-vertical_grid		m
+	-head			m
+	-hydraulic_conductivity	m/day
+	-leaky_hydraulic_conductivity 	m/day
+	-leaky_thickness 	m
+	-specific_storage	1/m
+	-dispersivity		m
+	-flux                   m/day
+	-well_diameter		m
+	-well_flow_rate		m^3/day
+	-equilibrium_phases	WATER
+	-exchange	WATER
+	-surface	WATER
+	-solid_solutions	WATER
+	-kinetics	WATER
+	-gas_phase	WATER	
+
+STEADY_FLOW true  
+	-minimum_time_step	0.001  d
+	-maximum_time_step	10000  d
+    -iterations   500
+
+FREE_SURFACE_BC true
+
+SOLUTE_TRANSPORT true
+
+SOLUTION_METHOD
+	-iterative_solver 	true
+	-tolerance		1e-14
+	-save_directions	10
+	-maximum_iterations	1500
+	-space_differencing	0.0
+	-time_differencing	1.0
+    -cross_dispersion 	false
+        
+GRID					
+	-uniform	X	0.	8000.	81
+	-uniform	Y	0.	8000.	81
+	-uniform	Z	345.	2345.	11
+	-print_orientation	XY
+
+MEDIA
+
+	-box	0.	0.	345.		8000.	8000.	2345.
+		-active 	1
+		-Kx 	0.15		
+		-Ky 	0.15		
+		-Kz 	0.15	
+		-porosity 	0.25
+		-specific_storage	1e-5
+		-longitudinal_dispersivity	400.
+		-horizontal_dispersivity	40.0
+		-vertical_dispersivity	    40.0
+	
+	-prism
+		-top 	points  grid
+            0.	    50.	    345.
+            8000. 	50.	    345.
+            0.	    8000.   1200. 
+            8000.	8000.	1200.        
+		-active		0
+    
+HEAD_IC
+	-box	0.	0.	345.		8000.	8000.	2345.
+		-head 	2000.0
+
+CHEMISTRY_IC
+	-box	0.	0.	345.		8000.	8000.	2345.
+		-solution 	constant 	2
+		
+SPECIFIED_HEAD_BC
+    -box	0.	0.	345.		8000.	50.	  700.
+    -exterior_cells_only  Y
+        -head
+        0       700.
+	-associated_solution
+		0	2
+	
+FLUX_BC	
+	-box	0.   0.   2335.		8000.    8000.    2345.
+		-face   Z
+		-flux  
+			0	xyz 	map 	recharge.txt
+		-associated_solution
+			0	2
+			
+LEAKY_BC			
+	-prism
+		-perimeter 	points  grid
+			5609.375	5203.125
+			5234.375	5921.875
+			5109.375	5953.125
+			3328.125	6265.625
+			3078.125	6203.125
+			2984.375	6171.875
+			2953.125	6140.625
+			2890.625	6015.625
+			2734.375	5328.125
+			2703.125	4953.125
+			2828.125	4734.375
+			2859.375	4703.125
+			2921.875	4671.875
+			3306.203358209		4782.9990671642
+			3796.8166977612		4991.1380597015
+			4074.3353544776		4981.2266791045
+			3930.6203358209		4550.0816231343
+			3900.8861940299		4322.119869403
+			4421.875	4078.125
+			4453.125	4078.125
+			4640.625	4109.375
+			5015.625	4265.625
+			5203.125	4359.375
+			5421.875	4484.375
+		-face		Z
+		-thickness 	15.
+		-hydraulic_conductivity 	0.005
+		-elevation 	xyz 	grid 	bathym.txt
+		-head 	0.   1110.
+		-associated_solution
+			0.	4
+		
+TIME_CONTROL
+	-time_step	
+	    #0.   50.
+		0.   200.
+	-time_end
+     0  20000.
+
+ZONE_FLOW
+	-domain
+	 
+PRINT_FREQUENCY
+	0. 
+	-xyz_heads  end
+	-xyz_chemistry 	end
+
+END

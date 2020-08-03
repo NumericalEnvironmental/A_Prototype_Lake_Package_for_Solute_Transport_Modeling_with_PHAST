@@ -1,0 +1,62 @@
+DATABASE C:\Program Files (x86)\USGS\Phreeqc Interactive 3.6.2-15100\database\llnl.dat
+TITLE Lake water composition via mixing and evaporation
+
+SOLUTION 1 			# mean river water
+    temp      25
+    pH        7.2 charge
+    pe        12
+    redox     pe
+    units     mmol/kgw
+    density   1
+    C(4)      0.96
+    Ca        0.37
+    Cl        0.22
+    K         0.06
+    Mg        0.17
+    Na        0.27
+    S(6)      0.12
+    -water    1 # kg
+
+SOLUTION 2 		# groundwater
+    temp      25
+    pH        7.6
+    pe        12
+    redox     pe
+    units     mmol/kgw
+    density   1
+    C(4)      2.0
+    Ca        1.0
+    Cl        2.0 
+    K         0.1
+    Mg        0.2
+    Na        1.0  charge
+    S(6)      0.4
+    -water    1 # kg
+
+MIX 1
+    1    0.515
+    2    0.485
+
+SAVE Solution 3
+
+END
+
+USE Solution 3
+
+REACTION 1
+    H2O         1
+    -27.38 moles in 1 steps
+
+EQUILIBRIUM_PHASES 1
+CO2(g)  -2.5   0
+Aragonite  0  0
+
+SAVE Solution 4
+
+SELECTED_OUTPUT 1
+    -file                 selected_output.txt
+    -reset                false
+    -pH                   true
+    -totals               C(4)  Cl  S(6)  Na  K  Ca  Mg
+
+END
